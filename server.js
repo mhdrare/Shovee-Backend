@@ -11,10 +11,12 @@ app.use(bodyParser.json())
 // public routes
 app.get('/', (req, res) => {
 	res.json({message: 'server running'})
+
 })
 
 
-app.listen(3000, ()=>{
+const port = process.env.PORT || 3000
+app.listen(port, ()=>{
 	console.log('server running in port 3000')
 })
 
