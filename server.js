@@ -2,6 +2,9 @@ const express 	 = require('express')
 const logger	 = require('morgan')
 const bodyParser = require('body-parser')
 
+// routes
+const usersRoutes = require('./routes/users.routes');
+
 const app	 = express()
 
 app.use(logger('dev'))
@@ -24,6 +27,9 @@ app.get('/', (req, res) => {
 	res.json({message: 'server running'})
 
 })
+
+app.use('/users', usersRoutes);
+
 
 
 const port = process.env.PORT || 3000
