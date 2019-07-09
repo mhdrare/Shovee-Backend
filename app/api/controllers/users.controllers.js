@@ -84,13 +84,16 @@ exports.auth = async (req, res, next) => {
     if(!validPassword) {
     	return res.status(400).json({
         	status: 'failed',
-        	message: 'User not found.'
+        	message: 'Wrong password.'
         });
     }
 
+    const token = jwt.sign({ _id: user._id }, 'PrivateKey')
+
     res.json({
     	status: 'success',
-    	data: _.pick(user, ['_id', 'name', 'email', 'username', 'phone'])
+    	data: _.pick(user, ['_id', 'name', 'email', 'username', 'phone']),
+    	token: token
     })
 
 } 
