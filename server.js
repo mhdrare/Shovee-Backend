@@ -1,6 +1,7 @@
 const express 	 = require('express')
 const logger	 = require('morgan')
 const bodyParser = require('body-parser')
+const routes     = require('./routes')
 
 const app	 = express()
 
@@ -11,7 +12,7 @@ app.use(bodyParser.json())
 const mongoose = require('mongoose')
 
 mongoose.connect('mongodb+srv://shovee:shoveeadmin@cluster0-r6cir.mongodb.net/test?retryWrites=true&w=majority', {
-    useNewUrlParser: true, dbName: 'shovee'
+    useNewUrlParser: true, dbName: 'shovee_dev'
 }).then(() => {
     console.log('connection success');
 }).catch(err => {
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 })
 
+routes(app)
 
 const port = process.env.PORT || 3000
 app.listen(port, ()=>{
