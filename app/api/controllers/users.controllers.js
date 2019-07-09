@@ -1,6 +1,7 @@
 const { userModel, validateUser } = require('../models/users.models')
 const bcrypt 	= require('bcrypt')
 const jwt 		= require('jsonwebtoken')
+const Joi 		= require('@hapi/joi')
 const _ 		= require('lodash')
 
 // register user
@@ -54,6 +55,51 @@ exports.create = async (req, res, next) => {
 //login user
 exports.auth = async (req, res, next) => {
 
+	// First Validate The HTTP Request
+    const { error } = validateLogin(req.body);
+    if (error) {
+        return res.status(400).json({
+        	status: 'failed',
+        	message: error.details[0].message
+        });
+    }
 
+    //  Now find the user by their email address
+    let user = await userModel.findOne({ email: req.body.user })
+    if (!user) {
+        user = await userModel.findOne({ username: req.body.user })
+	    if (!user) {
+	     	user = await userModel.findOne({ phone: req.body.user })
+		    if (!user) {
+		     	return res.status(400).json({
+        			status: 'failed',
+        			message: 'User not found.'
+        		}); 
+		    } 
+	    }
+    }
+
+    // validate password
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if(!validPassword) {
+    	return res.status(400).json({
+        	status: 'failed',
+        	message: 'User not found.'
+        });
+    }
+
+    res.json({
+    	status: 'success',
+    	data: _.pick(user, ['_id', 'name', 'email', 'username', 'phone'])
+    })
 
 } 
+
+// validate login
+function validateLogin(req) {
+    const schema = {
+        user: Joi.string().min(5).max(255).required(),
+        password: Joi.string().min(5).max(255).required()
+    };
+    return Joi.validate(req, schema);
+}
