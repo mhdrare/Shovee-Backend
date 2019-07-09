@@ -7,6 +7,9 @@ Joi.objectId = require('joi-objectid')(Joi)
 
 // routes
 const usersRoutes = require('./routes/users.routes')
+const productsRoutes = require('./routes/products.routes')
+const categoriesRoutes = require('./routes/categories.routes')
+const productDetailsRoutes = require('./routes/productDetails.routes')
 
 const app	 = express()
 
@@ -41,6 +44,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/users', usersRoutes)
+app.use('/products', productsRoutes)
+app.use('/categories', categoriesRoutes)
+app.use('/product-details', productDetailsRoutes)
 
 
 
