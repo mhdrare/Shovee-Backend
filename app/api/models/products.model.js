@@ -22,6 +22,10 @@ const ProductModel = new mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Categories'
+    },
+    city: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true

@@ -8,7 +8,7 @@ const ProductDetailModel = new mongoose.Schema({
         ref: 'Products'
     },
     description: {
-        type: Text,
+        type: String,
         required: false,
     },
     stok: {
@@ -18,10 +18,6 @@ const ProductDetailModel = new mongoose.Schema({
     brand: {
         type: String,
         required: true,
-    },
-    specification: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Specification',
     }
 }, {
     timestamps: true
