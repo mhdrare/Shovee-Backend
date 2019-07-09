@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
-const saltRounds = 10
-const Joi 		 = require('@hapi/joi')
+const mongoose 		= require('mongoose')
+const bcrypt 		= require('bcrypt')
+const saltRounds 	= 10
+const Joi 		 	= require('@hapi/joi')
 
 //Define a schema
 const Schema = mongoose.Schema

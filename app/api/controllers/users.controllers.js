@@ -1,7 +1,7 @@
 const { userModel, validateUser } = require('../models/users.models')
 const bcrypt 	= require('bcrypt')
 const jwt 		= require('jsonwebtoken')
-
+const _ 		= require('lodash')
 
 // register user
 exports.create = async (req, res, next) => {
@@ -38,7 +38,7 @@ exports.create = async (req, res, next) => {
 				res.json({
 					status: 'success',
 					message: "User added successfully",
-					data: dataRegister
+					data: _.pick(dataRegister, ['_id', 'name', 'email', 'username', 'phone'])
 				})
 			})
 		})
