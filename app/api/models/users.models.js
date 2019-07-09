@@ -3,6 +3,9 @@ const bcrypt 		= require('bcrypt')
 const saltRounds 	= 10
 const Joi 		 	= require('@hapi/joi')
 
+const jwt			= require('jsonwebtoken')
+const config 		= require('config')
+
 //Define a schema
 const Schema = mongoose.Schema
 
@@ -47,10 +50,16 @@ const UserSchema = new Schema({
 })
 
 // hash user password before saving into database
-UserSchema.pre('save', function(next){
+UserSchema.pre('save', function(next) {
 	this.password = bcrypt.hashSync(this.password, saltRounds)
 	next()
 });
+
+// method for generate auto token
+UserSchema.methods.generateAuthToken = function() {
+	const token = jwt.sign({_id: this._id}, config.get('PrivateKey'))
+	return token
+}
 
 function validateUser(user) {
     const schema = {

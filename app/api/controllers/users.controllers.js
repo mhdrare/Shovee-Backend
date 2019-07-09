@@ -1,6 +1,5 @@
 const { userModel, validateUser } = require('../models/users.models')
 const bcrypt 	= require('bcrypt')
-const jwt 		= require('jsonwebtoken')
 const Joi 		= require('@hapi/joi')
 const _ 		= require('lodash')
 
@@ -24,7 +23,7 @@ exports.create = async (req, res, next) => {
         	message: 'That user already exisits!'
         });
     } else {
-	    const users = new userModel({
+	    user = new userModel({
 			name: req.body.name,
 			email: req.body.email,
 			username: req.body.username,
@@ -32,10 +31,15 @@ exports.create = async (req, res, next) => {
 			password: req.body.password
 		})
 
-		await users.save()
+		await user.save()
 		.then(data => {
 			userModel.findById(data._id)
 			.then(dataRegister => {
+
+				// const token = jwt.sign({ _id: users._id }, config.get('PrivateKey'))
+				const token = user.generateAuthToken()
+
+				res.header('x-auth-token', token)
 				res.json({
 					status: 'success',
 					message: "User added successfully",
@@ -88,7 +92,8 @@ exports.auth = async (req, res, next) => {
         });
     }
 
-    const token = jwt.sign({ _id: user._id }, 'PrivateKey')
+    // const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'))
+    const token = user.generateAuthToken()
 
     res.json({
     	status: 'success',

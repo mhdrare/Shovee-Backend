@@ -14,7 +14,14 @@ app.use(logger('dev'))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
+const config = require('config')
+
 const mongoose = require('mongoose')
+
+if (!config.get('PrivateKey')) {
+    console.error('FATAL ERROR: PrivateKey is not defined.');
+    process.exit(1);
+}
 
 mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb+srv://shovee:shoveeadmin@cluster0-r6cir.mongodb.net/test?retryWrites=true&w=majority', {
