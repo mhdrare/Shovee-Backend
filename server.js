@@ -2,13 +2,14 @@ const express 	 = require('express')
 const logger	 = require('morgan')
 const bodyParser = require('body-parser')
 
+const Joi 		 = require('@hapi/joi')
+Joi.objectId = require('joi-objectid')(Joi)
+
 // routes
 const usersRoutes = require('./routes/users.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const productDetailsRoutes = require('./routes/productDetails.routes')
-
-const productsModel = require('./app/api/models/products.model')
 
 const app	 = express()
 
@@ -18,8 +19,10 @@ app.use(bodyParser.json())
 
 const mongoose = require('mongoose')
 
+mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb+srv://shovee:shoveeadmin@cluster0-r6cir.mongodb.net/test?retryWrites=true&w=majority', {
-    useNewUrlParser: true, dbName: 'shovee_dev'
+    useNewUrlParser: true, 
+    dbName: 'shovee'
 }).then(() => {
     console.log('connection success')
 }).catch(err => {
