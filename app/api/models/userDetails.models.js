@@ -2,25 +2,44 @@
 
 const mongoose = require('mongoose')
 
-const ProductDetailModel = new mongoose.Schema({
-    product: {
+const UserDetailModel = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Products'
+        ref: 'User',
     },
-    description: {
+    name: {
+        type: 'String',
+        trim: true,
+    },
+    gender: {
         type: String,
-        required: false,
+        enum : ['L', 'P']
     },
-    stok: {
-        type: Number,
-        required: true,
+    tanggal_lahir: {
+        type: String
     },
-    brand: {
-        type: String,
-        required: true,
+    image_profil: {
+        type: String
+    },
+    alamat: {
+        provinsi: {
+            type: String
+        },
+        kab: {
+            type: String
+        },
+        kec: {
+            type: String
+        },
+        alamat_lengkap: {
+            type: String
+        },
+        pos: {
+            type: String
+        }
     }
 }, {
     timestamps: true
 })
 
-module.exports = mongoose.model('ProductDetails', ProductDetailModel)
+module.exports = mongoose.model('UserDetails', UserDetailModel)

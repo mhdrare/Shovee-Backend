@@ -10,13 +10,6 @@ const config 		= require('config')
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
-	name: {
-		type: 'String',
-		trim: true,  
-  		required: true,
-  		minlength: 5,
-        maxlength: 50
-	},
  	email: {
   		type: String,
   		trim: true,
@@ -63,7 +56,6 @@ UserSchema.methods.generateAuthToken = function() {
 
 function validateUser(user) {
     const schema = {
-        name: Joi.string().min(5).max(50).required(),
         username: Joi.string().min(5).max(20).required(),
         phone: Joi.required(),
         email: Joi.string().min(5).max(255).required().email(),
