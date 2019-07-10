@@ -2,7 +2,7 @@ require('dotenv').config()
 const express 	 = require('express')
 const logger	 = require('morgan')
 const bodyParser = require('body-parser')
-const multerUploads = require('./middleware/multer.middleware')
+const path       = require('path')
 
 const Joi 		 = require('@hapi/joi')
 Joi.objectId = require('joi-objectid')(Joi)
@@ -13,13 +13,15 @@ const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const productDetailsRoutes = require('./routes/productDetails.routes')
 
-
+const {cloudinaryConfig, uploader} = require('./config/cloudinary.config')
+const {multerUploads, dataUri} = require('./middleware/multer.middleware')
 
 const app	 = express()
 
 app.use(logger('dev'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+app.use('*', cloudinaryConfig)
 
 
 const config = require('config')
@@ -49,7 +51,23 @@ app.get('/', (req, res) => {
 })
 
 app.post('/upload', multerUploads, (req, res) => {
-    console.log('req.body :', req.body)
+    if (req.file) {
+        const file = dataUri(req).content
+        return uploader.upload(file)
+                .then(result => {
+                    const image = result.url
+                    return res.json({
+                        message: 'success upload',
+                        data: {image}
+                    })
+                })
+                .catch(err => res.status(400).json({
+                    message: 'failed upload',
+                    data: {
+                        err
+                    }
+                }))
+    }
 })
 
 app.use('/users', usersRoutes)

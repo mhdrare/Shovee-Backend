@@ -18,6 +18,10 @@ const ProductDetailModel = new mongoose.Schema({
     brand: {
         type: String,
         required: true,
+    },
+    images: {
+        type: Array,
+        requied: true
     }
 }, {
     timestamps: true
