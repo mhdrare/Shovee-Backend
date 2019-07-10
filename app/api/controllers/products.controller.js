@@ -3,11 +3,34 @@
 const productsModel = require('../models/products.model')
 
 exports.findAll = async (req, res) => {
-    await productsModel.find().populate('category')
-            .sort({updatedAt: 'desc'})
+    let search = req.query.search ? req.query.search : '' 
+    let limit = req.query.limit ? parseInt(req.query.limit) : 10
+    let page = req.query.page ? parseInt(req.query.page) : 1
+    let offset = (page - 1) * limit
+    let sort = req.query.sort ? req.query.sort.toLowerCase() : 'desc'
+    let totalRows
+
+    await productsModel.countDocuments({
+                'name': {$regex: search, $options: 'i'}
+            })
+            .then(data => totalRows = data)
+
+    let totalPage = Math.ceil(parseInt(totalRows) / limit)
+
+    await productsModel.find({
+                'name': {$regex: search, $options: 'i'}
+            })
+            .populate({path: 'category', select: ['name']})
+            .sort({updatedAt: sort})
+            .limit(limit)
+            .skip(offset)
             .then(data => (
                 res.json({
                     status: 200,
+                    totalRows,
+                    limit,
+                    page,
+                    totalPage,
                     data
                 })
             ))
