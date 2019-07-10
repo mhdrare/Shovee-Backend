@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
         req.user = decoded;
         next();
     }
-    catch (ex) {
+    catch (err) {
         res.status(400).json({
             status: 'failed',
             message: 'Invalid JWT.'

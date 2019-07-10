@@ -1,7 +1,6 @@
 'use strict'
 
-const mongoose      = require('mongoose')
-const Joi           = require('@hapi/joi')
+const mongoose = require('mongoose')
 
 const ProductDetailModel = new mongoose.Schema({
     product: {
