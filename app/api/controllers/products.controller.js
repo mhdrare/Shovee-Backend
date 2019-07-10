@@ -64,10 +64,13 @@ exports.create = async (req, res) => {
     let images
     
     if(req.files.length > 0) {
-        images = _doMultipleUpload(req)
+        images = await _doMultipleUpload(req)
+        console.log('iyes')
     } else {
         images = ["https://res.cloudinary.com/sobat-balkon/image/upload/v1562715024/sample.jpg"]
     }
+
+    console.log(images)
 
     if (!name || !price || !category || !city || !description || !brand || !stok) {
         return res.status(400).json({
