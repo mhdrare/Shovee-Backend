@@ -26,6 +26,22 @@ const ProductModel = new mongoose.Schema({
     city: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: false,
+    },
+    stok: {
+        type: Number,
+        required: true,
+    },
+    brand: {
+        type: String,
+        required: true,
+    },
+    images: {
+        type: Array,
+        requied: true
     }
 }, {
     timestamps: true

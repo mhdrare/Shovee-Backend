@@ -1,6 +1,7 @@
 'use strict'
 
 const productsModel = require('../models/products.model')
+const {_doMultipleUpload} = require('../middleware/upload.middleware')
 
 exports.findAll = async (req, res) => {
     let search = req.query.search ? req.query.search : '' 
@@ -59,16 +60,23 @@ exports.findById = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    const { name, price, thumbnail, category, city } = req.body
+    const { name, price, category, city, description, brand, stok } = req.body
+    let images
+    
+    if(req.files.length > 0) {
+        images = _doMultipleUpload(req)
+    } else {
+        images = ["https://res.cloudinary.com/sobat-balkon/image/upload/v1562715024/sample.jpg"]
+    }
 
-    if (!name || !price || !thumbnail || !category || !city) {
+    if (!name || !price || !category || !city || !description || !brand || !stok) {
         return res.status(400).json({
             status: 400,
             message: "name, price, thumbnail, category cannot be null"
         })
     }
 
-    await productsModel.create({name, price, thumbnail, category, city})
+    await productsModel.create({name, price, thumbnail: images[0], category, city, description, brand, stok, images})
             .then(data => {
                 productsModel.findById(data._id).populate('category')
                     .then(createdData => (

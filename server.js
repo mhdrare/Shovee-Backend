@@ -11,13 +11,12 @@ Joi.objectId = require('joi-objectid')(Joi)
 const usersRoutes = require('./routes/users.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
-const productDetailsRoutes = require('./routes/productDetails.routes')
 
 const {cloudinaryConfig, uploader} = require('./config/cloudinary.config')
-const {multerUploads, dataUri} = require('./middleware/multer.middleware')
+const {multerUploads, dataUri} = require('./app/api/middleware/multer.middleware')
 
 const app	 = express()
-
+ 
 app.use(logger('dev'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
@@ -73,7 +72,6 @@ app.post('/upload', multerUploads, (req, res) => {
 app.use('/users', usersRoutes)
 app.use('/products', productsRoutes)
 app.use('/categories', categoriesRoutes)
-app.use('/product-details', productDetailsRoutes)
 
 
 
