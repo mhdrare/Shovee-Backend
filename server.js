@@ -35,7 +35,8 @@ if (!config.get('PrivateKey')) {
 
 mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb+srv://shovee:shoveeadmin@cluster0-r6cir.mongodb.net/test?retryWrites=true&w=majority', {
-    useNewUrlParser: true, 
+    useNewUrlParser: true,
+    useFindAndModify: false, 
     dbName: 'shovee'
 }).then(() => {
     console.log('connection success')
