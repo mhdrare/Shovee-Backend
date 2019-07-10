@@ -40,12 +40,21 @@ exports.create = async (req, res, next) => {
 				const token = user.generateAuthToken()
                 res.header('x-auth-token', token)
 
+                let address = {
+                    provinsi: '',
+                    kab: '',
+                    kec: '',
+                    alamat_lengkap: '',
+                    pos: ''
+                }
+
                 const userDetail = new userDetailModel({
                     user: dataRegister._id,
                     name: '',
                     gender: 'L',
                     tanggal_lahir: '',
-                    image_profil: ''
+                    image_profil: '',
+                    alamat: address
                 })
 
                 userDetail.save()

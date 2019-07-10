@@ -12,30 +12,30 @@ const UserDetailModel = new mongoose.Schema({
         trim: true,
     },
     gender: {
-        type: String,
+        type: 'String',
         enum : ['L', 'P']
     },
     tanggal_lahir: {
-        type: String
+        type: 'String'
     },
     image_profil: {
-        type: String
+        type: 'String'
     },
     alamat: {
         provinsi: {
-            type: String
+            type: 'String'
         },
         kab: {
-            type: String
+            type: 'String'
         },
         kec: {
-            type: String
+            type: 'String'
         },
         alamat_lengkap: {
-            type: String
+            type: 'String'
         },
         pos: {
-            type: String
+            type: 'String'
         }
     }
 }, {
