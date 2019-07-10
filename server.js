@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express 	 = require('express')
 const logger	 = require('morgan')
 const bodyParser = require('body-parser')
+const multerUploads = require('./middleware/multer.middleware')
 
 const Joi 		 = require('@hapi/joi')
 Joi.objectId = require('joi-objectid')(Joi)
@@ -11,11 +13,14 @@ const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const productDetailsRoutes = require('./routes/productDetails.routes')
 
+
+
 const app	 = express()
 
 app.use(logger('dev'))
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+
 
 const config = require('config')
 
@@ -41,6 +46,10 @@ mongoose.connect('mongodb+srv://shovee:shoveeadmin@cluster0-r6cir.mongodb.net/te
 app.get('/', (req, res) => {
 	res.json({message: 'server running'})
 
+})
+
+app.post('/upload', multerUploads, (req, res) => {
+    console.log('req.body :', req.body)
 })
 
 app.use('/users', usersRoutes)

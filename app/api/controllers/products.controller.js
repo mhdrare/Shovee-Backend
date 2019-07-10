@@ -89,10 +89,10 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
     const { name, price, thumbnail } = req.body
 
-    if (!name || !price || thumbnail) {
+    if (!name || !price || !thumbnail) {
         return res.status(400).json({
             status: 400,
-            message: "name, price, thumbnail, category cannot be null"
+            message: "name, price, thumbnail cannot be null"
         })
     }
 
