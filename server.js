@@ -12,7 +12,11 @@ const usersRoutes = require('./routes/users.routes')
 const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
+<<<<<<< HEAD
 const checkoutRoutes = require('./routes/checkout.routes')
+=======
+const resetPassword = require('./routes/resetPassword.routes')
+>>>>>>> dd3923f0ce40279c6d08d7d2b0e463408291c775
 
 const {cloudinaryConfig} = require('./config/cloudinary.config')
 
@@ -51,6 +55,30 @@ app.get('/', (req, res) => {
 
 })
 
+<<<<<<< HEAD
+=======
+app.post('/upload', multerUploads, (req, res) => {
+    if (req.file) {
+        const file = dataUri(req).content
+        return uploader.upload(file)
+                .then(result => {
+                    const image = result.url
+                    return res.json({
+                        message: 'success upload',
+                        data: {image}
+                    })
+                })
+                .catch(err => res.status(400).json({
+                    message: 'failed upload',
+                    data: {
+                        err
+                    }
+                }))
+    }
+})
+
+app.use('/', resetPassword)
+>>>>>>> dd3923f0ce40279c6d08d7d2b0e463408291c775
 app.use('/users', usersRoutes)
 app.use('/users', userDetailsRoutes)
 app.use('/products', productsRoutes)
