@@ -8,7 +8,7 @@ const {multerUploads} = require('../app/api/middleware/multer.middleware')
 // middleware
 const auth = require('../app/api/middleware/auth')
 
-router.get('/:id', auth, wishlistController.findAllUserWishlist)
+router.get('/', auth, wishlistController.findAllUserWishlist)
 router.post('/', auth, wishlistController.create)
 router.delete('/:id', auth, wishlistController.delete)
 
