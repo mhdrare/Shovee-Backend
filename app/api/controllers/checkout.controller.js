@@ -1,6 +1,7 @@
 'use strict'
 
 const checkoutModel = require('../models/checkout.model')
+const sendNotification = require('../middleware/sendNotification.lib')
 
 exports.findAllUserTransaction = async (req, res) => {
     console.log(req.params.id)
@@ -39,6 +40,10 @@ exports.findById = async (req, res) => {
 
 exports.create = async (req, res) => {
     const { product, totalPrice, seller, totalItem } = req.body
+    const playerId = req.query.playerId
+
+    console.log(playerId)
+    
     const user = req.user._id
     if (!user || !product || !totalPrice || !seller || !totalItem) {
         return res.status(400).json({
@@ -55,7 +60,10 @@ exports.create = async (req, res) => {
                             status: 200,
                             data: createdData
                         })
-                    ))
+                    )).then(() => {
+                        sendNotification({"en": "Your transaction is processed"}, playerId)
+                        console.log('sent')
+                    })
             })
             .catch(err => {
                 return res.status(500).json({

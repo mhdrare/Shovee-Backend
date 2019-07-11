@@ -50,6 +50,10 @@ const ProductModel = new mongoose.Schema({
     images: {
         type: Array,
         requied: true
+    },
+    favorites: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

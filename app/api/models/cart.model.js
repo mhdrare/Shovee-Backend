@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const WishlistModel = new mongoose.Schema({
+const CartModel = new mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
         ref: 'User'
@@ -8,13 +8,9 @@ const WishlistModel = new mongoose.Schema({
     product: {
         type: mongoose.Types.ObjectId,
         ref: 'Products'
-    },
-    liked: {
-        type: Boolean,
-        default: false
     }
 }, {
     timestamps: true
 })
 
-module.exports = mongoose.model('Wishlists', WishlistModel)
+module.exports = mongoose.model('Carts', CartModel)

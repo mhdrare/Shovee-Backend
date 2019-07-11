@@ -13,6 +13,7 @@ const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const checkoutRoutes = require('./routes/checkout.routes')
+const cartRoutes = require('./routes/cart.routes')
 
 const wishlistRoutes = require('./routes/wishlist.routes')
 
@@ -62,6 +63,7 @@ app.use('/products', productsRoutes)
 app.use('/categories', categoriesRoutes)
 app.use('/checkout', checkoutRoutes)
 app.use('/wishlist', wishlistRoutes)
+app.use('/cart', cartRoutes)
 
 
 

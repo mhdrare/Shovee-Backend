@@ -23,7 +23,7 @@ exports.findAll = async (req, res) => {
     await productsModel.find({
                 'name': {$regex: search, $options: 'i'}
             })
-            .populate({path: 'category', select: ['name']}).populate({path: 'seller', select: ['name'], populate: {path: 'user', select: ['_id']}})
+            .populate({path: 'category', select: ['name']}).populate({path: 'seller', select: ['name', 'alamat'], populate: {path: 'user', select: ['_id']}})
             .sort({[filter]: sort})
             .limit(limit)
             .skip(offset)
