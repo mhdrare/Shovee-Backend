@@ -164,7 +164,7 @@ exports.forgetPassword = async (req, res) => {
         const templateEmail = {
             form: `${serviceEmail}`,
             to: `${req.body.email}`,
-            subject: `Reset Password`,
+            subject: `Atur Ulang Password Shopee Kamu`,
             html: 
                 `<p>Halo ${user.username}</p>
                 <p>Kami telah menerima permintaan untuk atur ulang password. </p>

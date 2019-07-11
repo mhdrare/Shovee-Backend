@@ -12,6 +12,7 @@ const usersRoutes = require('./routes/users.routes')
 const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
+const resetPassword = require('./routes/resetPassword.routes')
 
 const {cloudinaryConfig, uploader} = require('./config/cloudinary.config')
 const {multerUploads, dataUri} = require('./app/api/middleware/multer.middleware')
@@ -51,11 +52,6 @@ app.get('/', (req, res) => {
 
 })
 
-app.get('/resetpassword', (req, res) => {
-	res.send('<h1>Reset Password</h1>')
-	res.end()
-})
-
 app.post('/upload', multerUploads, (req, res) => {
     if (req.file) {
         const file = dataUri(req).content
@@ -76,6 +72,7 @@ app.post('/upload', multerUploads, (req, res) => {
     }
 })
 
+app.use('/', resetPassword)
 app.use('/users', usersRoutes)
 app.use('/users', userDetailsRoutes)
 app.use('/products', productsRoutes)
