@@ -5,7 +5,7 @@ const wishlistModel = require('../models/wishlist.model')
 exports.findAllUserWishlist = async (req, res) => {
     await wishlistModel.find({
         user: req.user._id
-    }).populate('user').populate('product').populate('seller')
+    }).populate({path:'user', select: ['_id']}).populate('product')
             .then(data => (
                 res.json({
                     status: 200,
