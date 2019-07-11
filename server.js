@@ -13,6 +13,7 @@ const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const checkoutRoutes = require('./routes/checkout.routes')
+const wishlistRoutes = require('./routes/wishlist.routes')
 
 const {cloudinaryConfig} = require('./config/cloudinary.config')
 
@@ -56,6 +57,7 @@ app.use('/users', userDetailsRoutes)
 app.use('/products', productsRoutes)
 app.use('/categories', categoriesRoutes)
 app.use('/checkout', checkoutRoutes)
+app.use('/wishlist', wishlistRoutes)
 
 
 

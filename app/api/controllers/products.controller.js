@@ -62,7 +62,7 @@ exports.findById = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    const { name, price, category, city, description, condition, brand, stok } = req.body
+    const { name, price, category, city, description, brand, stok } = req.body
     //const seller = req.user._id
     let images
     
@@ -81,14 +81,14 @@ exports.create = async (req, res) => {
 
     console.log(images)
 
-    if (!name || !price || !category || !city || !description || !brand || !stok || !condition || !seller) {
+    if (!name || !price || !category || !city || !description || !brand || !stok || !seller) {
         return res.status(400).json({
             status: 400,
             message: "name, price, thumbnail, category cannot be null"
         })
     }
 
-    await productsModel.create({name, price, thumbnail: images[0], category, city, description, condition, brand, stok, images, seller: seller._id})
+    await productsModel.create({name, price, thumbnail: images[0], category, city, description, brand, stok, images, seller: seller._id})
             .then(data => {
                 productsModel.findById(data._id).populate({path: 'category', select: ['name']}).populate({path: 'seller', select: ['name'], populate: {path: 'user', select: ['_id']}})
                     .then(createdData => (

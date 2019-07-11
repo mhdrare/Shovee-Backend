@@ -5,7 +5,7 @@ const checkoutModel = require('../models/checkout.model')
 exports.findAllUserTransaction = async (req, res) => {
     console.log(req.params.id)
     await checkoutModel.find({
-        user: req.params.id
+        user: req.user._id
     }).populate({path:'user', select: ['_id']}).populate('product').populate('seller')
             .then(data => (
                 res.json({

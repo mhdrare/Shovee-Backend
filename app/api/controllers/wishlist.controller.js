@@ -4,7 +4,7 @@ const wishlistModel = require('../models/wishlist.model')
 
 exports.findAllUserWishlist = async (req, res) => {
     await wishlistModel.find({
-        user: req.param.id
+        user: req.user._id
     }).populate('user').populate('product').populate('seller')
             .then(data => (
                 res.json({
@@ -48,32 +48,27 @@ exports.create = async (req, res) => {
             })
 }
 
-exports.update = async (req, res) => {
-
-    await wishlistModel.findByIdAndUpdate(req.params.id, req.body, {new: true})
+exports.delete = async (req, res) => {
+    await wishlistModel.findByIdAndDelete(req.params.id)
             .then(data => {
                 if (!data) {
                     return res.status(404).json({
                         status: 404,
-                        message: `Transaction not found with id = ${req.params.id}`
+                        message: `Wishlist not found with id = ${req.params.id}`
                     }) 
                 }
 
-                wishlistModel.findById(data._id)
-                    .then(updatedData => (
-                        res.json({
-                            status: 200,
-                            data: updatedData
-                        })
-                    ))
+                res.json({
+                    status: 200,
+                    _id: req.params.id
+                })
             })
             .catch(err => {
                 if(err.kind === 'ObjectId') {
-                    return res.status(404).json({
+                    res.status(404).json({
                         status: 404,
-                        message: `Transaction not found with id = ${req.params.id}`,
-                        data: []
-                    }) 
+                        message: `Wishlist not found with id = ${req.params.id}`
+                    })
                 }
 
                 res.status(500).json({
