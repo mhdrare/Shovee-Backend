@@ -12,9 +12,9 @@ const usersRoutes = require('./routes/users.routes')
 const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
+const checkoutRoutes = require('./routes/checkout.routes')
 
-const {cloudinaryConfig, uploader} = require('./config/cloudinary.config')
-const {multerUploads, dataUri} = require('./app/api/middleware/multer.middleware')
+const {cloudinaryConfig} = require('./config/cloudinary.config')
 
 const app	 = express()
  
@@ -51,30 +51,11 @@ app.get('/', (req, res) => {
 
 })
 
-app.post('/upload', multerUploads, (req, res) => {
-    if (req.file) {
-        const file = dataUri(req).content
-        return uploader.upload(file)
-                .then(result => {
-                    const image = result.url
-                    return res.json({
-                        message: 'success upload',
-                        data: {image}
-                    })
-                })
-                .catch(err => res.status(400).json({
-                    message: 'failed upload',
-                    data: {
-                        err
-                    }
-                }))
-    }
-})
-
 app.use('/users', usersRoutes)
 app.use('/users', userDetailsRoutes)
 app.use('/products', productsRoutes)
 app.use('/categories', categoriesRoutes)
+app.use('/checkout', checkoutRoutes)
 
 
 

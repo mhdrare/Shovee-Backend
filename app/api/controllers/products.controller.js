@@ -1,11 +1,13 @@
 'use strict'
 
 const productsModel = require('../models/products.model')
+const userDetailsModel = require('../models/userDetails.models')
 const {_doMultipleUpload} = require('../middleware/upload.middleware')
 
 exports.findAll = async (req, res) => {
     let search = req.query.search ? req.query.search : '' 
     let limit = req.query.limit ? parseInt(req.query.limit) : 10
+    let filter = req.query.filter ? req.query.filter : 'updatedAt'
     let page = req.query.page ? parseInt(req.query.page) : 1
     let offset = (page - 1) * limit
     let sort = req.query.sort ? req.query.sort.toLowerCase() : 'desc'
@@ -21,8 +23,8 @@ exports.findAll = async (req, res) => {
     await productsModel.find({
                 'name': {$regex: search, $options: 'i'}
             })
-            .populate({path: 'category', select: ['name']})
-            .sort({updatedAt: sort})
+            .populate({path: 'category', select: ['name']}).populate({path: 'seller', select: ['name'], populate: {path: 'user', select: ['_id']}})
+            .sort({[filter]: sort})
             .limit(limit)
             .skip(offset)
             .then(data => (
@@ -60,9 +62,16 @@ exports.findById = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    const { name, price, category, city, description, brand, stok } = req.body
+    const { name, price, category, city, description, condition, brand, stok } = req.body
+    //const seller = req.user._id
     let images
     
+    const seller = await userDetailsModel.findOne({user: req.user})
+                .then(result => result)
+                .catch(err => res.status(500).json({
+                    message: err
+                }))
+    console.log(seller)
     if(req.files.length > 0) {
         images = await _doMultipleUpload(req)
         console.log('iyes')
@@ -72,16 +81,16 @@ exports.create = async (req, res) => {
 
     console.log(images)
 
-    if (!name || !price || !category || !city || !description || !brand || !stok) {
+    if (!name || !price || !category || !city || !description || !brand || !stok || !condition || !seller) {
         return res.status(400).json({
             status: 400,
             message: "name, price, thumbnail, category cannot be null"
         })
     }
 
-    await productsModel.create({name, price, thumbnail: images[0], category, city, description, brand, stok, images})
+    await productsModel.create({name, price, thumbnail: images[0], category, city, description, condition, brand, stok, images, seller: seller._id})
             .then(data => {
-                productsModel.findById(data._id).populate('category')
+                productsModel.findById(data._id).populate({path: 'category', select: ['name']}).populate({path: 'seller', select: ['name'], populate: {path: 'user', select: ['_id']}})
                     .then(createdData => (
                         res.json({
                             status: 200,

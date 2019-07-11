@@ -39,6 +39,14 @@ const ProductModel = new mongoose.Schema({
         type: String,
         required: true,
     },
+    condition: {
+        type: String,
+        enum: ['Baru', 'Bekas'],
+    },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserDetails'
+    },
     images: {
         type: Array,
         requied: true
