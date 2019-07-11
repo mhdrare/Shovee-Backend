@@ -13,7 +13,11 @@ const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const checkoutRoutes = require('./routes/checkout.routes')
+<<<<<<< HEAD
+const wishlistRoutes = require('./routes/wishlist.routes')
+=======
 const resetPassword = require('./routes/resetPassword.routes')
+>>>>>>> c8bf9baeef966929124d626c5e0ac72de30d7542
 
 const {cloudinaryConfig} = require('./config/cloudinary.config')
 
@@ -58,6 +62,7 @@ app.use('/users', userDetailsRoutes)
 app.use('/products', productsRoutes)
 app.use('/categories', categoriesRoutes)
 app.use('/checkout', checkoutRoutes)
+app.use('/wishlist', wishlistRoutes)
 
 
 

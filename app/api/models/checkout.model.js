@@ -25,4 +25,4 @@ const CheckoutModel = new mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Wishlists', CheckoutModel)
+module.exports = mongoose.model('Checkout', CheckoutModel)
