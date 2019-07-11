@@ -44,7 +44,6 @@ exports.create = async (req, res, next) => {
 
 				// const token = jwt.sign({ _id: users._id }, config.get('PrivateKey'))
 				const token = user.generateAuthToken()
-                res.header('x-auth-token', token)
 
                 let address = {
                     provinsi: '',
@@ -68,7 +67,8 @@ exports.create = async (req, res, next) => {
 				res.json({
 					status: 'success',
 					message: "User added successfully",
-					data: _.pick(dataRegister, ['_id', 'email', 'username', 'phone'])
+					data: _.pick(dataRegister, ['_id', 'email', 'username', 'phone']),
+                    token: token
 				})
 			})
 		})
@@ -185,6 +185,57 @@ exports.forgetPassword = async (req, res) => {
                 })
             }
         })
+
+}
+
+exports.changePassword = async (req, res) => {
+
+    let user = await userModel.findById(req.user)
+
+    if(!req.body.old_password || !req.body.new_password || !req.body.new_password_confirmation){
+        return res.status(400).json({
+            status: 'failed',
+            message: 'not null'
+        })
+    }
+
+    // validate password
+    const validPassword = await bcrypt.compare(req.body.old_password, user.password)
+
+    if(!validPassword) {
+        return res.status(400).json({
+            status: 'failed',
+            message: 'Wrong password.'
+        });
+    }
+
+    // const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'))
+    if(req.body.new_password != req.body.new_password_confirmation){
+        return res.status(400).json({
+            status: 'failed',
+            message: 'not same'
+        })
+    }
+
+    req.body.new_password = bcrypt.hashSync(req.body.new_password, saltRounds)
+    await userModel.findOneAndUpdate({_id: req.user}, {password: req.body.new_password})
+    .then(data=>{
+        userModel.findOne({_id: req.user})
+        .then(dataUpdate => {
+            const token = user.generateAuthToken()
+            res.json({
+                status: 'success',
+                data: dataUpdate,
+                token: token
+            })
+        })
+    })
+    .catch(err=>{
+        return res.status(500).json({
+            status: 'failed',
+            message: err.message
+        })
+    })
 
 }
 
