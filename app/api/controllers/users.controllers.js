@@ -4,6 +4,12 @@ const bcrypt 	= require('bcrypt')
 const Joi 		= require('@hapi/joi')
 const _ 		= require('lodash')
 
+const jwt           = require('jsonwebtoken')
+const config        = require('config')
+
+const crypto    = require('crypto')
+const nodemailer = require('nodemailer')
+
 // register user
 exports.create = async (req, res, next) => {
 
@@ -122,6 +128,65 @@ exports.auth = async (req, res, next) => {
     })
 
 } 
+
+exports.forgetPassword = async (req, res) => {
+    if (!req.body.email) {
+        return res.status(400).json({
+            status: 400,
+            message: "email cannot be null"
+        })
+    }
+
+    let user = await userModel.findOne({ email: req.body.email })
+    
+    
+        if(!user){
+            return res.status(404).json({
+                status: 'failed',
+                message: 'user not found'
+            })
+        }
+
+        const tokenResetPassword = jwt.sign({email: req.body.email}, config.get('PrivateKey'))
+        
+        const serviceEmail  = process.env.EMAIL_ADDRESS || 'clone.shovee@gmail.com';
+        const servicePass   = process.env.EMAIL_PASSWORD || 'shovee12345!@#$%';
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: serviceEmail,
+                pass: servicePass
+            }
+        })
+
+        let linkResetPassword = req.protocol + '://' + req.get('host') + '/resetpassword?tokenResetPassword=' + tokenResetPassword;
+
+        const templateEmail = {
+            form: `${serviceEmail}`,
+            to: `${req.body.email}`,
+            subject: `Reset Password`,
+            html: 
+                `<p>Halo ${user.username}</p>
+                <p>Kami telah menerima permintaan untuk atur ulang password. </p>
+                <br>
+                <p>Untuk mengatur ulang, silahkan <a href='${linkResetPassword}'>klik di sini</a> atau salin alamat di bawah ini di browser kamu.
+                <br>${linkResetPassword}</p>`
+        }
+
+        transporter.sendMail(templateEmail, (err, response) => {
+            if(err){
+                console.error(err);
+            }
+            else{
+                console.log(response);
+                res.json({
+                    status: 'success',
+                    tokenResetPassword
+                })
+            }
+        })
+
+}
 
 // validate login
 function validateLogin(req) {

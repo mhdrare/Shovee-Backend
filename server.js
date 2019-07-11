@@ -51,6 +51,11 @@ app.get('/', (req, res) => {
 
 })
 
+app.get('/resetpassword', (req, res) => {
+	res.send('<h1>Reset Password</h1>')
+	res.end()
+})
+
 app.post('/upload', multerUploads, (req, res) => {
     if (req.file) {
         const file = dataUri(req).content
