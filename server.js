@@ -13,6 +13,7 @@ const userDetailsRoutes = require('./routes/userDetail.routes')
 const productsRoutes = require('./routes/products.routes')
 const categoriesRoutes = require('./routes/categories.routes')
 const checkoutRoutes = require('./routes/checkout.routes')
+const resetPassword = require('./routes/resetPassword.routes')
 
 const {cloudinaryConfig} = require('./config/cloudinary.config')
 
@@ -51,6 +52,7 @@ app.get('/', (req, res) => {
 
 })
 
+app.use('/', resetPassword)
 app.use('/users', usersRoutes)
 app.use('/users', userDetailsRoutes)
 app.use('/products', productsRoutes)
