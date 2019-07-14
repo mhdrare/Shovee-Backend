@@ -6,6 +6,59 @@
   Built with Express.js and MongoDB.
 </p>
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Usage](#usage-for-development)
+- [End Point List](#end-points)
+- [Related Project](#related-project)
+- [Contributors](#contributors)
+
+## Introduction
+Shopee is the leading e-commerce platform in Southeast Asia and Taiwan. It is a platform tailored for the region, providing customers with an easy, secure and fast online shopping experience through strong payment and logistical support. 
+
+Shopee aims to continually enhance its platform and become the region’s e-commerce destination of choice. Shopee has a wide selection of product categories ranging from consumer electronics to home & living, health & beauty, baby & toys, fashion and fitness equipment. 
+
+## Features
+* Register, Login with JWT, Forget Password, Change Password
+* Get and update user details
+* Add product with upload image for seller
+* Buy product
+* Get purchase histories
+* Notification for buyer after checkout with Onesignal
+
+## Requirements
+* [`npm`](https://www.npmjs.com/get-npm)
+* [`Postman`](https://www.getpostman.com/)
+
+## Usage for development
+* Open CMD or Terminal and enter to the app directory
+* Type npm install
+* Setup .env file
+* Open Postman for testing API
+
+## End Points
+1. Products
+  * get /products
+  * get /products/:id
+  * post /products
+  * patch /products/:id
+  * delete /products/:id
+2. Checkouts
+  * get /checkout
+  * post /checkout
+3. Wishlist
+  * get /wishlist
+  * delete /wishlist/:id
+4. Categories
+  * get /categories
+  * get /categories/:id
+  * post /categories
+  * patch /categories/:id
+  * delete /categories/:id
+
 ## Related Project
 * [Shopee Clone Frontend](https://github.com/mhdrare/Shovee-Frontend.git)
 
