@@ -21,7 +21,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "joi-objectid": "2.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": ">=4.17.13",
     "mongodb": "^3.2.7",
     "mongoose": "^5.6.3",
